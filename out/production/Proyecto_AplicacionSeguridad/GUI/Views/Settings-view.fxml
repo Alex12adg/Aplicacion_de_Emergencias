@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.SettingsController">
+
+    <content>
+        <VBox spacing="22" styleClass="module-page settings-page">
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+
+            <VBox spacing="18" styleClass="settings-hero">
+                <VBox spacing="8">
+                    <Label text="Configuracion" styleClass="home-hero-title"/>
+                    <Label text="Gestiona la cuenta activa desde este panel y manten el acceso protegido mediante confirmacion por contrasena." styleClass="home-hero-subtitle" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="10" styleClass="home-status-card">
+                    <Label text="Estado" styleClass="panel-title"/>
+                    <Label fx:id="settingsStatusLabel" wrapText="true"/>
+                </VBox>
+            </VBox>
+
+            <VBox spacing="16">
+                <VBox spacing="12" styleClass="panel-card">
+                    <Label text="Cuenta activa" styleClass="panel-title"/>
+                    <Label text="Puedes cambiar el nombre, el correo o la contrasena de la cuenta actual. Cualquier cambio requiere la contrasena vigente." wrapText="true"/>
+
+                    <VBox spacing="8" styleClass="subtle-panel">
+                        <Label text="Nombre actual" styleClass="field-label"/>
+                        <Label fx:id="accountNameLabel" wrapText="true"/>
+                        <Label text="Correo actual" styleClass="field-label"/>
+                        <Label fx:id="accountEmailLabel" wrapText="true"/>
+                    </VBox>
+
+                    <VBox spacing="8" styleClass="subtle-panel">
+                        <Label text="Nuevo nombre" styleClass="field-label"/>
+                        <TextField fx:id="newNameField" promptText="Deja en blanco para mantener el actual"/>
+
+                        <Label text="Nuevo correo electronico" styleClass="field-label"/>
+                        <TextField fx:id="newEmailField" promptText="Deja en blanco para mantener el actual"/>
+
+                        <Label text="Nueva contrasena" styleClass="field-label"/>
+                        <PasswordField fx:id="newPasswordField" promptText="Deja en blanco para mantener la actual"/>
+
+                        <Label text="Contrasena actual" styleClass="field-label"/>
+                        <PasswordField fx:id="confirmPasswordField" promptText="Necesaria para guardar cambios"/>
+
+                        <Button text="Guardar cambios de cuenta" onAction="#handleUpdateAccount" styleClass="primary-action-button"/>
+                    </VBox>
+                </VBox>
+
+                <VBox spacing="12" styleClass="panel-card">
+                    <Label text="Eliminar cuenta" styleClass="panel-title"/>
+                    <Label text="Esta accion borra la cuenta activa y los datos asociados. Antes de ejecutarse se mostrara una confirmacion adicional." wrapText="true"/>
+
+                    <VBox spacing="8" styleClass="subtle-panel">
+                        <Label text="Contrasena actual" styleClass="field-label"/>
+                        <PasswordField fx:id="deletePasswordField" promptText="Introduce la contrasena para confirmar"/>
+                        <Button text="Eliminar cuenta activa" onAction="#handleDeleteAccount" styleClass="primary-action-button"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

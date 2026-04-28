@@ -1,33 +1,26 @@
 package Resources.Heart;
-import java.util.Scanner;
 
 public class HeartRateAlert {
 
-    public boolean waitForUserConfirmation() {
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("ALERTA: posible problema cardíaco.");
-        System.out.println("Escribe 'ok' en 20 segundos para cancelar.");
-
-        long startTime = System.currentTimeMillis();
-
-        while (System.currentTimeMillis() - startTime < 20000) {
-
-            if (sc.hasNextLine()) {
-
-                String response = sc.nextLine();
-
-                if (response.equalsIgnoreCase("ok")) {
-
-                    System.out.println("Alerta cancelada por el usuario.");
-                    return true;
-                }
-            }
+    public HeartMonitorState createAlertState(boolean userConfirmed, int heartRate, int noPulseCounter) {
+        if (userConfirmed) {
+            return new HeartMonitorState(
+                    false,
+                    heartRate,
+                    noPulseCounter,
+                    false,
+                    true,
+                    "El usuario ha confirmado que esta bien. La prealerta se ha cancelado."
+            );
         }
 
-        System.out.println("No se recibió respuesta del usuario.");
-
-        return false;
+        return new HeartMonitorState(
+                false,
+                heartRate,
+                noPulseCounter,
+                true,
+                false,
+                "Posible ausencia de pulso detectada. Se requiere confirmacion del usuario."
+        );
     }
 }

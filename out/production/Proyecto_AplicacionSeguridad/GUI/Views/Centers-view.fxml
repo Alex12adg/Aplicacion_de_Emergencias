@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.CentersController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="6">
+                <Label text="Centros" styleClass="module-title"/>
+                <Label text="Busca centros cercanos y gestiona tus centros privados dentro del mismo modulo." styleClass="module-subtitle" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="18">
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Busqueda" styleClass="panel-title"/>
+                    <CheckBox fx:id="automaticLocationCheck" onAction="#updateLocationMode" text="Usar ubicacion automatica"/>
+
+                    <VBox fx:id="manualLocationBox" spacing="8">
+                        <Label text="Latitud" styleClass="field-label"/>
+                        <TextField fx:id="latitudeField" promptText="40.4168"/>
+                        <Label text="Longitud" styleClass="field-label"/>
+                        <TextField fx:id="longitudeField" promptText="-3.7038"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Radio de busqueda (km)" styleClass="field-label"/>
+                        <TextField fx:id="radiusField" promptText="5"/>
+                    </VBox>
+
+                    <HBox spacing="10">
+                        <Button onAction="#handleFindCenters" styleClass="primary-action-button" text="Buscar cercanos"/>
+                        <Button onAction="#handleShowAllCenters" text="Ver todos"/>
+                    </HBox>
+
+                    <Label fx:id="centersStatusLabel" styleClass="status-label" wrapText="true"/>
+                    <Label fx:id="searchSummaryLabel" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Resultados" styleClass="panel-title"/>
+                    <ListView fx:id="centersList" prefHeight="260.0"/>
+                </VBox>
+
+                <VBox spacing="16" styleClass="panel-card">
+                    <Label text="Centros publicos" styleClass="panel-title"/>
+                    <Label text="Estos centros ya vienen definidos en el sistema y son de solo lectura." wrapText="true"/>
+                    <TableView fx:id="publicResourcesTable" prefHeight="180.0">
+                        <columns>
+                            <TableColumn fx:id="publicNameColumn" text="Centro"/>
+                            <TableColumn fx:id="publicCategoryColumn" text="Categoria"/>
+                            <TableColumn fx:id="publicLocationColumn" text="Ubicacion"/>
+                            <TableColumn fx:id="publicDurationColumn" text="Min"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <VBox spacing="16" styleClass="panel-card">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Centros privados" styleClass="panel-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Anadir centro" onAction="#handleAddPrivateCenter" styleClass="primary-action-button"/>
+                        <Button fx:id="updatePrivateCenterButton" text="Modificar informacion" onAction="#handleUpdatePrivateCenter" styleClass="home-outline-button" disable="true"/>
+                        <Button text="Borrar centro" onAction="#handleDeletePrivateCenter" styleClass="home-outline-button"/>
+                    </HBox>
+
+                    <TableView fx:id="privateResourcesTable" prefHeight="180.0">
+                        <columns>
+                            <TableColumn fx:id="privateNameColumn" text="Centro"/>
+                            <TableColumn fx:id="privateCategoryColumn" text="Categoria"/>
+                            <TableColumn fx:id="privateLocationColumn" text="Ubicacion"/>
+                            <TableColumn fx:id="privateDurationColumn" text="Min"/>
+                        </columns>
+                    </TableView>
+
+                    <VBox spacing="8">
+                        <Label fx:id="privateResourceFormLabel" text="Nuevo centro privado" styleClass="field-label"/>
+                        <TextField fx:id="privateResourceNameField" promptText="Nombre del centro"/>
+                        <TextField fx:id="privateResourceCategoryField" promptText="Categoria o tipo de atencion"/>
+                        <TextField fx:id="privateResourceLocationField" promptText="Ubicacion"/>
+                        <TextField fx:id="privateResourceDurationField" promptText="Tiempo de llegada aproximada (en minutos)"/>
+                        <TextArea fx:id="privateResourceDescriptionArea" prefRowCount="3" wrapText="true" promptText="Descripcion del centro o servicio"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

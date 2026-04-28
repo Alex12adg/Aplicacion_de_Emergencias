@@ -1,5 +1,7 @@
 package Resources.Emergency;
+
 import Resources.Location.GPSModule;
+import Resources.Session.UserSession;
 import Resources.User.UserData;
 
 import java.util.Scanner;
@@ -23,7 +25,7 @@ public class EmergencyDetector {
         System.out.print("Tipo de emergencia (ej. Accidente, Salud): ");
         String tipo = sc.nextLine();
 
-        System.out.print("¿Usar GPS automático? (s/n): ");
+        System.out.print("Usar GPS automatico? (s/n): ");
         String resp = sc.nextLine();
 
         boolean automatico = resp.equalsIgnoreCase("s");
@@ -34,7 +36,7 @@ public class EmergencyDetector {
         try {
             gravedad = Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
-            System.out.println("Entrada inválida para gravedad. Se asume 5.");
+            System.out.println("Entrada invalida para gravedad. Se asume 5.");
             gravedad = 5;
         }
 
@@ -43,13 +45,26 @@ public class EmergencyDetector {
             return null;
         }
 
-        // usuario simulado -> en un caso real se cargaría desde ContactManager o auth
-        UserData usuario = new UserData("Usuario Simulado", "600000000");
+        UserData usuario = UserSession.getUser();
+
+        if (usuario == null) {
+            usuario = new UserData(
+                    0,
+                    "Usuario Simulado",
+                    "600000000",
+                    "user",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
 
         return new EmergencyEvent(tipo, ubicacion, usuario, gravedad);
     }
 
-    private boolean validateSeverity(int gravedad) {
+    public boolean validateSeverity(int gravedad) {
         return gravedad >= umbral;
     }
 }

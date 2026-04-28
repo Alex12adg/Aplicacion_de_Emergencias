@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.EmergencyController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Modo de emergencia" styleClass="module-title"/>
+                    <Label text="Activa la alerta desde la aplicacion y visualiza el resultado sin depender de la terminal." styleClass="module-subtitle" wrapText="true"/>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="18">
+                <VBox spacing="16" styleClass="panel-card">
+                    <Label text="Datos de activacion" styleClass="panel-title"/>
+
+                    <VBox spacing="8">
+                        <Label text="Tipo de emergencia" styleClass="field-label"/>
+                        <TextField fx:id="emergencyTypeField" promptText="Accidente, caida, salud..."/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Nivel de gravedad" styleClass="field-label"/>
+                        <TextField fx:id="severityField" promptText="Valor entre 1 y 10"/>
+                    </VBox>
+
+                    <CheckBox fx:id="automaticLocationCheck"
+                              onAction="#updateLocationMode"
+                              text="Usar GPS automatico"/>
+
+                    <VBox fx:id="manualLocationBox" spacing="8">
+                        <Label text="Ubicacion manual" styleClass="field-label"/>
+                        <TextField fx:id="manualLocationField" promptText="40.4168,-3.7038"/>
+                    </VBox>
+
+                    <Button fx:id="sendEmergencyButton"
+                            onAction="#handleStartEmergency"
+                            styleClass="primary-action-button"
+                            text="Enviar alerta"/>
+
+                    <Label fx:id="statusLabel" styleClass="status-label" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="16" styleClass="panel-card">
+                    <Label text="Seguimiento de la alerta" styleClass="panel-title"/>
+
+                    <VBox spacing="6">
+                        <Label text="Estado actual" styleClass="field-label"/>
+                        <Label fx:id="summaryLabel" wrapText="true"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="Ubicacion usada" styleClass="field-label"/>
+                        <Label fx:id="locationLabel" wrapText="true"/>
+                    </VBox>
+
+                    <VBox spacing="6" VBox.vgrow="ALWAYS">
+                        <Label text="Detalle" styleClass="field-label"/>
+                        <TextArea fx:id="detailsArea" editable="false" prefRowCount="6" wrapText="true"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+
+            <VBox spacing="12" styleClass="panel-card">
+                <Label text="Centros de emergencia disponibles" styleClass="panel-title"/>
+                <ListView fx:id="centersList" prefHeight="180.0"/>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

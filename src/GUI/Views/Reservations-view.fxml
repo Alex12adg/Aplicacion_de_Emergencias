@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.ReservationsController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="6">
+                <Label text="Reservas de atencion" styleClass="module-title"/>
+                <Label text="Reserva citas medicas, tramites en comisaria y otros servicios asistenciales desde la propia aplicacion." styleClass="module-subtitle" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="16" styleClass="panel-card">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="formTitleLabel" text="Nueva reserva" styleClass="panel-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Actualizar datos" onAction="#handleReload" styleClass="home-outline-button"/>
+                </HBox>
+
+                <VBox spacing="8">
+                    <Label text="Tipo de centro o servicio" styleClass="field-label"/>
+                    <ComboBox fx:id="resourceTypeComboBox" promptText="Selecciona el tipo"/>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Centro disponible" styleClass="field-label"/>
+                    <ComboBox fx:id="resourceComboBox" promptText="Selecciona un centro publico o privado"/>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Detalle del recurso" styleClass="field-label"/>
+                    <Label fx:id="selectedResourceLabel" wrapText="true"/>
+                </VBox>
+
+                <HBox spacing="12">
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Fecha" styleClass="field-label"/>
+                        <DatePicker fx:id="appointmentDatePicker"/>
+                    </VBox>
+
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Hora inicio" styleClass="field-label"/>
+                        <TextField fx:id="startTimeField" promptText="09:00"/>
+                    </VBox>
+
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Hora fin" styleClass="field-label"/>
+                        <TextField fx:id="endTimeField" promptText="09:30"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="8">
+                    <Label text="Motivo" styleClass="field-label"/>
+                    <TextField fx:id="purposeField" promptText="Revision, denuncia, documentacion, seguimiento..."/>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Observaciones" styleClass="field-label"/>
+                    <TextArea fx:id="notesArea" prefRowCount="4" wrapText="true"/>
+                </VBox>
+
+                <HBox spacing="10">
+                    <Button fx:id="submitReservationButton" text="Reservar cita" onAction="#handleReserve" styleClass="primary-action-button"/>
+                    <Button fx:id="cancelEditButton" text="Cancelar edicion" onAction="#handleCancelEdit" managed="false" visible="false" styleClass="home-outline-button"/>
+                </HBox>
+                <Label fx:id="statusLabel" styleClass="status-label" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="16" styleClass="panel-card">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Mis reservas" styleClass="panel-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Editar seleccionada" onAction="#handleEditReservation" styleClass="home-outline-button"/>
+                    <Button text="Borrar seleccionada" onAction="#handleDeleteReservation" styleClass="home-outline-button"/>
+                </HBox>
+
+                <Label fx:id="reservationSummaryLabel" wrapText="true"/>
+                <ListView fx:id="reservationsList" prefHeight="200.0" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

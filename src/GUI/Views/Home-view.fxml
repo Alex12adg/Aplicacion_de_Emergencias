@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.HomeController">
+
+    <content>
+        <StackPane styleClass="module-page home-page">
+            <VBox spacing="22" styleClass="home-dashboard-shell" maxWidth="520.0">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24"/>
+                </padding>
+
+                <VBox spacing="18" styleClass="home-hero">
+                    <VBox spacing="10">
+                        <Label fx:id="welcomeTitleLabel" styleClass="home-hero-title" text="Panel de asistencia"/>
+                        <Label fx:id="welcomeSubtitleLabel" styleClass="home-hero-subtitle" text="Accede rapidamente a los modulos principales de seguridad, salud y configuracion." wrapText="true"/>
+
+                        <VBox spacing="10">
+                            <Button text="Abrir reservas" onAction="#openReservations" styleClass="primary-action-button"/>
+                            <Button text="Ver configuracion" onAction="#openSettings" styleClass="home-outline-button"/>
+                        </VBox>
+                    </VBox>
+
+                    <VBox spacing="12" styleClass="home-status-card">
+                        <Label text="Estado del panel" styleClass="panel-title"/>
+                        <Label text="La aplicacion ya centraliza modulos de ayuda, historial y nuevas reservas desde la interfaz grafica." wrapText="true"/>
+                        <Label text="Usa este dashboard como punto de acceso rapido." styleClass="status-label" wrapText="true"/>
+                    </VBox>
+                </VBox>
+
+                <VBox spacing="14">
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Emergencia" styleClass="home-card-title"/>
+                        <Label text="Activa una alerta manual indicando tipo, gravedad y ubicacion." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openEmergency" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Peligro" styleClass="home-card-title"/>
+                        <Label text="Lanza una alarma modal que bloquea la aplicacion hasta resolverla." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openDanger" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Salud" styleClass="home-card-title"/>
+                        <Label text="Simula lecturas cardiacas y gestiona prealertas de ausencia de pulso." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openHealth" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Voz" styleClass="home-card-title"/>
+                        <Label text="Configura una palabra clave y prueba la deteccion desde la interfaz." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openVoice" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Reservas" styleClass="home-card-title"/>
+                        <Label text="Gestiona citas medicas, tramites en comisaria y servicios de atencion social." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openReservations" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Centros" styleClass="home-card-title"/>
+                        <Label text="Consulta centros disponibles y filtralos por radio de busqueda." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openCenters" styleClass="home-outline-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" styleClass="home-module-card">
+                        <Label text="Historial medico" styleClass="home-card-title"/>
+                        <Label text="Revisa datos medicos y gestiona contactos de emergencia." wrapText="true"/>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <Button text="Abrir modulo" onAction="#openMedical" styleClass="home-outline-button"/>
+                    </VBox>
+                </VBox>
+
+            </VBox>
+        </StackPane>
+    </content>
+
+</ScrollPane>

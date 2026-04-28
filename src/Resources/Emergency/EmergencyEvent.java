@@ -22,8 +22,14 @@ public class EmergencyEvent {
 
     @Override
     public String toString() {
+        String nombreUsuario = "Desconocido";
+
+        if (usuario != null && usuario.getNombre() != null && !usuario.getNombre().isBlank()) {
+            nombreUsuario = usuario.getNombre();
+        }
+
         return "Emergencia [" + tipoEmergencia + "] en " + ubicacion +
-                " | Usuario: " + usuario.getNombre() +
+                " | Usuario: " + nombreUsuario +
                 " | Gravedad: " + gravedad;
     }
 }

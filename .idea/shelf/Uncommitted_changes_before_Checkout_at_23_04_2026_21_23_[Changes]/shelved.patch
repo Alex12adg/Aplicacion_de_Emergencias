@@ -1,0 +1,293 @@
+Index: src/Services/MedicalService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Services;\r\n\r\nimport Resources.Database.ContactDAO;\r\nimport Resources.Database.MedicalDAO;\r\nimport Resources.Model.Contact;\r\nimport Resources.Model.MedicalInfo;\r\n\r\nimport java.util.List;\r\n\r\npublic class MedicalService {\r\n\r\n    private final MedicalDAO medicalDAO;\r\n    private final ContactDAO contactDAO;\r\n\r\n    public MedicalService() {\r\n        this.medicalDAO = new MedicalDAO();\r\n        this.contactDAO = new ContactDAO();\r\n    }\r\n\r\n    public void saveMedicalInfo(int userId, String allergies, String conditions, String medications) throws Exception {\r\n\r\n        if (userId <= 0) {\r\n            throw new Exception(\"Usuario invalido\");\r\n        }\r\n\r\n        boolean medicalSaved = medicalDAO.saveMedicalInfo(userId, allergies, conditions, medications);\r\n\r\n        if (!medicalSaved) {\r\n            throw new Exception(\"No se pudo guardar el perfil medico\");\r\n        }\r\n    }\r\n\r\n    public void addContact(int userId, String contactName, String contactPhone, String contactRelation) throws Exception {\r\n\r\n        if (userId <= 0) {\r\n            throw new Exception(\"Usuario invalido\");\r\n        }\r\n\r\n        if (contactName == null || contactName.isBlank()) {\r\n            throw new Exception(\"El nombre del contacto es obligatorio\");\r\n        }\r\n\r\n        if (contactPhone == null || contactPhone.isBlank()) {\r\n            throw new Exception(\"El telefono del contacto es obligatorio\");\r\n        }\r\n\r\n        boolean contactSaved = contactDAO.addContact(userId, contactName, contactPhone, contactRelation);\r\n\r\n        if (!contactSaved) {\r\n            throw new Exception(\"No se pudo guardar el contacto\");\r\n        }\r\n    }\r\n\r\n    public MedicalInfo getMedicalInfo(int userId) throws Exception {\r\n\r\n        if (userId <= 0) {\r\n            throw new Exception(\"Usuario invalido\");\r\n        }\r\n\r\n        return medicalDAO.getMedicalInfoByUser(userId);\r\n    }\r\n\r\n    public List<Contact> getContacts(int userId) throws Exception {\r\n\r\n        if (userId <= 0) {\r\n            throw new Exception(\"Usuario invalido\");\r\n        }\r\n\r\n        return contactDAO.getContactsByUser(userId);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Services/MedicalService.java b/src/Services/MedicalService.java
+--- a/src/Services/MedicalService.java	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/src/Services/MedicalService.java	(date 1776971817585)
+@@ -60,6 +60,23 @@
+         return medicalDAO.getMedicalInfoByUser(userId);
+     }
+ 
++    public void deleteContact(int userId, int contactId) throws Exception {
++
++        if (userId <= 0) {
++            throw new Exception("Usuario invalido");
++        }
++
++        if (contactId <= 0) {
++            throw new Exception("Contacto invalido");
++        }
++
++        boolean deleted = contactDAO.deleteContact(userId, contactId);
++
++        if (!deleted) {
++            throw new Exception("No se pudo borrar el contacto");
++        }
++    }
++
+     public List<Contact> getContacts(int userId) throws Exception {
+ 
+         if (userId <= 0) {
+Index: src/GUI/Views/Medical-form-view.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.ListView?>\r\n<?import javafx.scene.control.ScrollPane?>\r\n<?import javafx.scene.control.TextArea?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.layout.HBox?>\r\n<?import javafx.scene.layout.Priority?>\r\n<?import javafx.scene.layout.Region?>\r\n<?import javafx.scene.layout.VBox?>\r\n\r\n<ScrollPane fitToWidth=\"true\"\r\n            hbarPolicy=\"NEVER\"\r\n            vbarPolicy=\"AS_NEEDED\"\r\n            xmlns=\"http://javafx.com/javafx\"\r\n            xmlns:fx=\"http://javafx.com/fxml\"\r\n            fx:controller=\"GUI.controllers.MedicalFormController\">\r\n\r\n    <content>\r\n        <VBox alignment=\"TOP_LEFT\" spacing=\"20\" styleClass=\"module-page\">\r\n            <padding>\r\n                <Insets top=\"22\" right=\"22\" bottom=\"22\" left=\"22\"/>\r\n            </padding>\r\n\r\n            <VBox spacing=\"6\">\r\n                <Label text=\"Historial medico\" styleClass=\"module-title\"/>\r\n                <Label text=\"Consulta tu informacion medica, actualiza los datos principales y gestiona contactos de emergencia solo cuando lo necesites.\" styleClass=\"module-subtitle\" wrapText=\"true\"/>\r\n            </VBox>\r\n\r\n            <VBox spacing=\"16\" styleClass=\"panel-card\">\r\n                <HBox alignment=\"CENTER_LEFT\" spacing=\"10\">\r\n                    <Label text=\"Datos medicos\" styleClass=\"panel-title\"/>\r\n                    <Region HBox.hgrow=\"ALWAYS\"/>\r\n                    <Button fx:id=\"editButton\" text=\"Editar datos\" onAction=\"#enableEditMode\" styleClass=\"home-outline-button\"/>\r\n                    <Button fx:id=\"saveButton\" text=\"Guardar cambios\" onAction=\"#handleSave\" styleClass=\"primary-action-button\"/>\r\n                </HBox>\r\n\r\n                <HBox spacing=\"16\">\r\n                    <VBox spacing=\"8\" HBox.hgrow=\"ALWAYS\">\r\n                        <Label text=\"Alergias\" styleClass=\"field-label\"/>\r\n                        <TextArea fx:id=\"allergiesField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                    </VBox>\r\n\r\n                    <VBox spacing=\"8\" HBox.hgrow=\"ALWAYS\">\r\n                        <Label text=\"Condiciones medicas\" styleClass=\"field-label\"/>\r\n                        <TextArea fx:id=\"conditionsField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                    </VBox>\r\n                </HBox>\r\n\r\n                <VBox spacing=\"8\">\r\n                    <Label text=\"Medicacion actual\" styleClass=\"field-label\"/>\r\n                    <TextArea fx:id=\"medicationsField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                </VBox>\r\n\r\n                <Label fx:id=\"statusLabel\" styleClass=\"status-label\" wrapText=\"true\"/>\r\n            </VBox>\r\n\r\n            <VBox spacing=\"16\" styleClass=\"panel-card\">\r\n                <HBox alignment=\"CENTER_LEFT\" spacing=\"10\">\r\n                    <Label text=\"Contactos de emergencia\" styleClass=\"panel-title\"/>\r\n                    <Region HBox.hgrow=\"ALWAYS\"/>\r\n                    <Button fx:id=\"toggleContactFormButton\" text=\"Mostrar formulario de contacto\" onAction=\"#toggleContactForm\" styleClass=\"home-outline-button\"/>\r\n                </HBox>\r\n\r\n                <ListView fx:id=\"contactsList\" prefHeight=\"170\"/>\r\n\r\n                <VBox fx:id=\"contactFormBox\" spacing=\"12\" managed=\"false\" visible=\"false\" styleClass=\"subtle-panel\">\r\n                    <Label text=\"Nuevo contacto\" styleClass=\"field-label\"/>\r\n\r\n                    <HBox spacing=\"12\">\r\n                        <TextField fx:id=\"contactNameField\" promptText=\"Nombre completo\" HBox.hgrow=\"ALWAYS\"/>\r\n                        <TextField fx:id=\"contactPhoneField\" promptText=\"Telefono\" HBox.hgrow=\"ALWAYS\"/>\r\n                    </HBox>\r\n\r\n                    <TextField fx:id=\"contactRelationField\" promptText=\"Madre, padre, pareja, amigo...\"/>\r\n\r\n                    <HBox alignment=\"CENTER_RIGHT\">\r\n                        <Button fx:id=\"addContactButton\" text=\"Anadir contacto\" onAction=\"#handleAddContact\" styleClass=\"primary-action-button\"/>\r\n                    </HBox>\r\n                </VBox>\r\n            </VBox>\r\n        </VBox>\r\n    </content>\r\n\r\n</ScrollPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/GUI/Views/Medical-form-view.fxml b/src/GUI/Views/Medical-form-view.fxml
+--- a/src/GUI/Views/Medical-form-view.fxml	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/src/GUI/Views/Medical-form-view.fxml	(date 1776971983136)
+@@ -60,8 +60,9 @@
+ 
+             <VBox spacing="16" styleClass="panel-card">
+                 <HBox alignment="CENTER_LEFT" spacing="10">
+-                    <Label text="Contactos de emergencia" styleClass="panel-title"/>
++                    <Label text="Contactos" styleClass="panel-title"/>
+                     <Region HBox.hgrow="ALWAYS"/>
++                    <Button fx:id="deleteContactButton" text="Borrar seleccionado" onAction="#handleDeleteContact" styleClass="home-outline-button"/>
+                     <Button fx:id="toggleContactFormButton" text="Mostrar formulario de contacto" onAction="#toggleContactForm" styleClass="home-outline-button"/>
+                 </HBox>
+ 
+Index: src/Resources/Database/ContactDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Resources.Database;\r\n\r\nimport Resources.Model.Contact;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.PreparedStatement;\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class ContactDAO {\r\n\r\n    public List<Contact> getContactsByUser(int userId) throws SQLException {\r\n\r\n        List<Contact> contacts = new ArrayList<>();\r\n        String sql = \"\"\"\r\n            SELECT contact_name, contact_phone, relation\r\n            FROM contacts\r\n            WHERE user_id = ?\r\n            ORDER BY id\r\n        \"\"\";\r\n\r\n        try (Connection conn = DBConnection.getConnection();\r\n             PreparedStatement stmt = conn.prepareStatement(sql)) {\r\n\r\n            stmt.setInt(1, userId);\r\n\r\n            try (ResultSet rs = stmt.executeQuery()) {\r\n                while (rs.next()) {\r\n                    contacts.add(new Contact(\r\n                            rs.getString(\"contact_name\"),\r\n                            rs.getString(\"contact_phone\"),\r\n                            rs.getString(\"relation\")\r\n                    ));\r\n                }\r\n            }\r\n        }\r\n\r\n        return contacts;\r\n    }\r\n\r\n    public boolean addContact(int userId, String name, String phone, String relation) throws SQLException {\r\n\r\n        String sql = \"\"\"\r\n            INSERT INTO contacts (user_id, contact_name, contact_phone, relation)\r\n            VALUES (?, ?, ?, ?)\r\n        \"\"\";\r\n\r\n        try (Connection conn = DBConnection.getConnection();\r\n             PreparedStatement stmt = conn.prepareStatement(sql)) {\r\n\r\n            stmt.setInt(1, userId);\r\n            stmt.setString(2, name);\r\n            stmt.setString(3, phone);\r\n            stmt.setString(4, relation);\r\n\r\n            return stmt.executeUpdate() > 0;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Resources/Database/ContactDAO.java b/src/Resources/Database/ContactDAO.java
+--- a/src/Resources/Database/ContactDAO.java	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/src/Resources/Database/ContactDAO.java	(date 1776971817584)
+@@ -15,7 +15,7 @@
+ 
+         List<Contact> contacts = new ArrayList<>();
+         String sql = """
+-            SELECT contact_name, contact_phone, relation
++            SELECT id, contact_name, contact_phone, relation
+             FROM contacts
+             WHERE user_id = ?
+             ORDER BY id
+@@ -29,6 +29,7 @@
+             try (ResultSet rs = stmt.executeQuery()) {
+                 while (rs.next()) {
+                     contacts.add(new Contact(
++                            rs.getInt("id"),
+                             rs.getString("contact_name"),
+                             rs.getString("contact_phone"),
+                             rs.getString("relation")
+@@ -55,6 +56,23 @@
+             stmt.setString(3, phone);
+             stmt.setString(4, relation);
+ 
++            return stmt.executeUpdate() > 0;
++        }
++    }
++
++    public boolean deleteContact(int userId, int contactId) throws SQLException {
++
++        String sql = """
++            DELETE FROM contacts
++            WHERE id = ? AND user_id = ?
++        """;
++
++        try (Connection conn = DBConnection.getConnection();
++             PreparedStatement stmt = conn.prepareStatement(sql)) {
++
++            stmt.setInt(1, contactId);
++            stmt.setInt(2, userId);
++
+             return stmt.executeUpdate() > 0;
+         }
+     }
+Index: src/GUI/controllers/MedicalFormController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package GUI.controllers;\r\n\r\nimport GUI.AppLayout;\r\nimport Resources.Model.Contact;\r\nimport Resources.Model.MedicalInfo;\r\nimport Resources.Session.UserSession;\r\nimport Resources.User.UserData;\r\nimport Services.MedicalService;\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.event.ActionEvent;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Node;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.Label;\r\nimport javafx.scene.control.ListView;\r\nimport javafx.scene.control.TextArea;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.layout.VBox;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class MedicalFormController {\r\n\r\n    @FXML\r\n    private TextArea allergiesField;\r\n\r\n    @FXML\r\n    private TextArea conditionsField;\r\n\r\n    @FXML\r\n    private TextArea medicationsField;\r\n\r\n    @FXML\r\n    private TextField contactNameField;\r\n\r\n    @FXML\r\n    private TextField contactPhoneField;\r\n\r\n    @FXML\r\n    private TextField contactRelationField;\r\n\r\n    @FXML\r\n    private ListView<String> contactsList;\r\n\r\n    @FXML\r\n    private Label statusLabel;\r\n\r\n    @FXML\r\n    private Button editButton;\r\n\r\n    @FXML\r\n    private Button addContactButton;\r\n\r\n    @FXML\r\n    private Button toggleContactFormButton;\r\n\r\n    @FXML\r\n    private Button saveButton;\r\n\r\n    @FXML\r\n    private VBox contactFormBox;\r\n\r\n    private final MedicalService medicalService;\r\n    private final ObservableList<String> contactItems;\r\n    private final List<Contact> pendingContacts;\r\n    private boolean editMode;\r\n\r\n    public MedicalFormController() {\r\n        this.medicalService = new MedicalService();\r\n        this.contactItems = FXCollections.observableArrayList();\r\n        this.pendingContacts = new ArrayList<>();\r\n    }\r\n\r\n    @FXML\r\n    public void initialize() {\r\n        contactsList.setItems(contactItems);\r\n        loadCurrentData();\r\n\r\n        if (UserSession.isNewUser()) {\r\n            editMode = true;\r\n            saveButton.setText(\"Guardar y continuar\");\r\n            editButton.setVisible(false);\r\n            editButton.setManaged(false);\r\n        } else {\r\n            editMode = false;\r\n        }\r\n\r\n        applyEditMode();\r\n    }\r\n\r\n    @FXML\r\n    public void enableEditMode() {\r\n        editMode = true;\r\n        statusLabel.setText(\"Modo edicion activado\");\r\n        applyEditMode();\r\n    }\r\n\r\n    @FXML\r\n    public void toggleContactForm() {\r\n        boolean showForm = !contactFormBox.isVisible();\r\n        contactFormBox.setVisible(showForm);\r\n        contactFormBox.setManaged(showForm);\r\n        toggleContactFormButton.setText(showForm ? \"Ocultar formulario de contacto\" : \"Mostrar formulario de contacto\");\r\n    }\r\n\r\n    @FXML\r\n    public void handleAddContact() {\r\n        try {\r\n            if (!editMode) {\r\n                throw new Exception(\"Activa primero el modo edicion\");\r\n            }\r\n\r\n            String name = contactNameField.getText();\r\n            String phone = contactPhoneField.getText();\r\n            String relation = contactRelationField.getText();\r\n\r\n            if (name == null || name.isBlank()) {\r\n                throw new Exception(\"El nombre del contacto es obligatorio\");\r\n            }\r\n\r\n            if (phone == null || phone.isBlank()) {\r\n                throw new Exception(\"El telefono del contacto es obligatorio\");\r\n            }\r\n\r\n            Contact contact = new Contact(name, phone, relation);\r\n            pendingContacts.add(contact);\r\n            contactItems.add(formatContact(contact));\r\n            clearContactInputs();\r\n            contactFormBox.setVisible(false);\r\n            contactFormBox.setManaged(false);\r\n            toggleContactFormButton.setText(\"Mostrar formulario de contacto\");\r\n            statusLabel.setText(\"Contacto preparado para guardar\");\r\n        } catch (Exception e) {\r\n            statusLabel.setText(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @FXML\r\n    public void handleSave(ActionEvent event) {\r\n        try {\r\n            UserData user = UserSession.getUser();\r\n\r\n            if (user == null) {\r\n                throw new Exception(\"No hay usuario en sesion\");\r\n            }\r\n\r\n            if (!editMode) {\r\n                throw new Exception(\"Activa primero el modo edicion\");\r\n            }\r\n\r\n            boolean initialRegistration = UserSession.isNewUser();\r\n            boolean hasExistingContacts = !medicalService.getContacts(user.getId()).isEmpty();\r\n\r\n            if (initialRegistration && !hasExistingContacts && pendingContacts.isEmpty()) {\r\n                throw new Exception(\"Debes anadir al menos un contacto\");\r\n            }\r\n\r\n            medicalService.saveMedicalInfo(\r\n                    user.getId(),\r\n                    allergiesField.getText(),\r\n                    conditionsField.getText(),\r\n                    medicationsField.getText()\r\n            );\r\n\r\n            savePendingContacts(user.getId());\r\n\r\n            user.setAllergies(allergiesField.getText());\r\n            user.setConditions(conditionsField.getText());\r\n            user.setMedications(medicationsField.getText());\r\n\r\n            pendingContacts.clear();\r\n            editMode = false;\r\n            loadContacts();\r\n            applyEditMode();\r\n            statusLabel.setText(\"Datos guardados correctamente\");\r\n\r\n            if (initialRegistration) {\r\n                UserSession.setNewUser(false);\r\n                openScene(event, \"/GUI/Views/main-view.fxml\");\r\n            }\r\n        } catch (Exception e) {\r\n            statusLabel.setText(e.getMessage());\r\n        }\r\n    }\r\n\r\n    private void savePendingContacts(int userId) throws Exception {\r\n        for (Contact contact : pendingContacts) {\r\n            medicalService.addContact(\r\n                    userId,\r\n                    contact.getName(),\r\n                    contact.getPhone(),\r\n                    contact.getRelation()\r\n            );\r\n        }\r\n    }\r\n\r\n    private void loadCurrentData() {\r\n        try {\r\n            UserData user = UserSession.getUser();\r\n\r\n            if (user == null || user.getId() <= 0) {\r\n                return;\r\n            }\r\n\r\n            MedicalInfo medicalInfo = medicalService.getMedicalInfo(user.getId());\r\n\r\n            if (medicalInfo != null) {\r\n                allergiesField.setText(nullSafe(medicalInfo.getAllergies()));\r\n                conditionsField.setText(nullSafe(medicalInfo.getConditions()));\r\n                medicationsField.setText(nullSafe(medicalInfo.getMedications()));\r\n            } else {\r\n                allergiesField.setText(nullSafe(user.getAllergies()));\r\n                conditionsField.setText(nullSafe(user.getConditions()));\r\n                medicationsField.setText(nullSafe(user.getMedications()));\r\n            }\r\n\r\n            loadContacts();\r\n        } catch (Exception e) {\r\n            statusLabel.setText(\"No se pudieron cargar los datos actuales\");\r\n        }\r\n    }\r\n\r\n    private void loadContacts() throws Exception {\r\n        UserData user = UserSession.getUser();\r\n        List<Contact> contacts = medicalService.getContacts(user.getId());\r\n\r\n        contactItems.clear();\r\n\r\n        for (Contact contact : contacts) {\r\n            contactItems.add(formatContact(contact));\r\n        }\r\n    }\r\n\r\n    private void applyEditMode() {\r\n        allergiesField.setEditable(editMode);\r\n        conditionsField.setEditable(editMode);\r\n        medicationsField.setEditable(editMode);\r\n\r\n        contactNameField.setDisable(!editMode);\r\n        contactPhoneField.setDisable(!editMode);\r\n        contactRelationField.setDisable(!editMode);\r\n        addContactButton.setDisable(!editMode);\r\n        toggleContactFormButton.setDisable(!editMode);\r\n        saveButton.setDisable(!editMode);\r\n\r\n        if (!editMode) {\r\n            contactFormBox.setVisible(false);\r\n            contactFormBox.setManaged(false);\r\n            toggleContactFormButton.setText(\"Mostrar formulario de contacto\");\r\n        }\r\n    }\r\n\r\n    private String formatContact(Contact contact) {\r\n        String relation = nullSafe(contact.getRelation());\r\n\r\n        if (relation.isBlank()) {\r\n            relation = \"Sin relacion indicada\";\r\n        }\r\n\r\n        return contact.getName() + \" | \" + contact.getPhone() + \" | \" + relation;\r\n    }\r\n\r\n    private void clearContactInputs() {\r\n        contactNameField.clear();\r\n        contactPhoneField.clear();\r\n        contactRelationField.clear();\r\n    }\r\n\r\n    private void openScene(ActionEvent event, String resourcePath) throws Exception {\r\n        FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));\r\n        Parent root = loader.load();\r\n\r\n        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();\r\n        stage.setScene(new Scene(root, AppLayout.MOBILE_WIDTH, AppLayout.MOBILE_HEIGHT));\r\n        stage.show();\r\n    }\r\n\r\n    private String nullSafe(String value) {\r\n        return value == null ? \"\" : value;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/GUI/controllers/MedicalFormController.java b/src/GUI/controllers/MedicalFormController.java
+--- a/src/GUI/controllers/MedicalFormController.java	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/src/GUI/controllers/MedicalFormController.java	(date 1776971817585)
+@@ -46,7 +46,7 @@
+     private TextField contactRelationField;
+ 
+     @FXML
+-    private ListView<String> contactsList;
++    private ListView<Contact> contactsList;
+ 
+     @FXML
+     private Label statusLabel;
+@@ -63,11 +63,14 @@
+     @FXML
+     private Button saveButton;
+ 
++    @FXML
++    private Button deleteContactButton;
++
+     @FXML
+     private VBox contactFormBox;
+ 
+     private final MedicalService medicalService;
+-    private final ObservableList<String> contactItems;
++    private final ObservableList<Contact> contactItems;
+     private final List<Contact> pendingContacts;
+     private boolean editMode;
+ 
+@@ -130,7 +133,7 @@
+ 
+             Contact contact = new Contact(name, phone, relation);
+             pendingContacts.add(contact);
+-            contactItems.add(formatContact(contact));
++            contactItems.add(contact);
+             clearContactInputs();
+             contactFormBox.setVisible(false);
+             contactFormBox.setManaged(false);
+@@ -188,6 +191,40 @@
+             statusLabel.setText(e.getMessage());
+         }
+     }
++
++    @FXML
++    public void handleDeleteContact() {
++        try {
++            if (!editMode) {
++                throw new Exception("Activa primero el modo edicion");
++            }
++
++            Contact selectedContact = contactsList.getSelectionModel().getSelectedItem();
++
++            if (selectedContact == null) {
++                throw new Exception("Selecciona un contacto para borrar");
++            }
++
++            if (selectedContact.getId() <= 0) {
++                pendingContacts.remove(selectedContact);
++                contactItems.remove(selectedContact);
++                statusLabel.setText("Contacto pendiente eliminado");
++                return;
++            }
++
++            UserData user = UserSession.getUser();
++
++            if (user == null || user.getId() <= 0) {
++                throw new Exception("No hay usuario en sesion");
++            }
++
++            medicalService.deleteContact(user.getId(), selectedContact.getId());
++            loadContacts();
++            statusLabel.setText("Contacto borrado correctamente");
++        } catch (Exception e) {
++            statusLabel.setText(e.getMessage());
++        }
++    }
+ 
+     private void savePendingContacts(int userId) throws Exception {
+         for (Contact contact : pendingContacts) {
+@@ -231,9 +268,10 @@
+         List<Contact> contacts = medicalService.getContacts(user.getId());
+ 
+         contactItems.clear();
++        contactItems.addAll(pendingContacts);
+ 
+         for (Contact contact : contacts) {
+-            contactItems.add(formatContact(contact));
++            contactItems.add(contact);
+         }
+     }
+ 
+@@ -246,6 +284,7 @@
+         contactPhoneField.setDisable(!editMode);
+         contactRelationField.setDisable(!editMode);
+         addContactButton.setDisable(!editMode);
++        deleteContactButton.setDisable(!editMode);
+         toggleContactFormButton.setDisable(!editMode);
+         saveButton.setDisable(!editMode);
+ 
+@@ -256,16 +295,6 @@
+         }
+     }
+ 
+-    private String formatContact(Contact contact) {
+-        String relation = nullSafe(contact.getRelation());
+-
+-        if (relation.isBlank()) {
+-            relation = "Sin relacion indicada";
+-        }
+-
+-        return contact.getName() + " | " + contact.getPhone() + " | " + relation;
+-    }
+-
+     private void clearContactInputs() {
+         contactNameField.clear();
+         contactPhoneField.clear();
+Index: out/production/Proyecto_AplicacionSeguridad/GUI/Views/Medical-form-view.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.ListView?>\r\n<?import javafx.scene.control.ScrollPane?>\r\n<?import javafx.scene.control.TextArea?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.layout.HBox?>\r\n<?import javafx.scene.layout.Priority?>\r\n<?import javafx.scene.layout.Region?>\r\n<?import javafx.scene.layout.VBox?>\r\n\r\n<ScrollPane fitToWidth=\"true\"\r\n            hbarPolicy=\"NEVER\"\r\n            vbarPolicy=\"AS_NEEDED\"\r\n            xmlns=\"http://javafx.com/javafx\"\r\n            xmlns:fx=\"http://javafx.com/fxml\"\r\n            fx:controller=\"GUI.controllers.MedicalFormController\">\r\n\r\n    <content>\r\n        <VBox alignment=\"TOP_LEFT\" spacing=\"20\" styleClass=\"module-page\">\r\n            <padding>\r\n                <Insets top=\"22\" right=\"22\" bottom=\"22\" left=\"22\"/>\r\n            </padding>\r\n\r\n            <VBox spacing=\"6\">\r\n                <Label text=\"Historial medico\" styleClass=\"module-title\"/>\r\n                <Label text=\"Consulta tu informacion medica, actualiza los datos principales y gestiona contactos de emergencia solo cuando lo necesites.\" styleClass=\"module-subtitle\" wrapText=\"true\"/>\r\n            </VBox>\r\n\r\n            <VBox spacing=\"16\" styleClass=\"panel-card\">\r\n                <HBox alignment=\"CENTER_LEFT\" spacing=\"10\">\r\n                    <Label text=\"Datos medicos\" styleClass=\"panel-title\"/>\r\n                    <Region HBox.hgrow=\"ALWAYS\"/>\r\n                    <Button fx:id=\"editButton\" text=\"Editar datos\" onAction=\"#enableEditMode\" styleClass=\"home-outline-button\"/>\r\n                    <Button fx:id=\"saveButton\" text=\"Guardar cambios\" onAction=\"#handleSave\" styleClass=\"primary-action-button\"/>\r\n                </HBox>\r\n\r\n                <HBox spacing=\"16\">\r\n                    <VBox spacing=\"8\" HBox.hgrow=\"ALWAYS\">\r\n                        <Label text=\"Alergias\" styleClass=\"field-label\"/>\r\n                        <TextArea fx:id=\"allergiesField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                    </VBox>\r\n\r\n                    <VBox spacing=\"8\" HBox.hgrow=\"ALWAYS\">\r\n                        <Label text=\"Condiciones medicas\" styleClass=\"field-label\"/>\r\n                        <TextArea fx:id=\"conditionsField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                    </VBox>\r\n                </HBox>\r\n\r\n                <VBox spacing=\"8\">\r\n                    <Label text=\"Medicacion actual\" styleClass=\"field-label\"/>\r\n                    <TextArea fx:id=\"medicationsField\" prefRowCount=\"4\" wrapText=\"true\"/>\r\n                </VBox>\r\n\r\n                <Label fx:id=\"statusLabel\" styleClass=\"status-label\" wrapText=\"true\"/>\r\n            </VBox>\r\n\r\n            <VBox spacing=\"16\" styleClass=\"panel-card\">\r\n                <HBox alignment=\"CENTER_LEFT\" spacing=\"10\">\r\n                    <Label text=\"Contactos de emergencia\" styleClass=\"panel-title\"/>\r\n                    <Region HBox.hgrow=\"ALWAYS\"/>\r\n                    <Button fx:id=\"toggleContactFormButton\" text=\"Mostrar formulario de contacto\" onAction=\"#toggleContactForm\" styleClass=\"home-outline-button\"/>\r\n                </HBox>\r\n\r\n                <ListView fx:id=\"contactsList\" prefHeight=\"170\"/>\r\n\r\n                <VBox fx:id=\"contactFormBox\" spacing=\"12\" managed=\"false\" visible=\"false\" styleClass=\"subtle-panel\">\r\n                    <Label text=\"Nuevo contacto\" styleClass=\"field-label\"/>\r\n\r\n                    <HBox spacing=\"12\">\r\n                        <TextField fx:id=\"contactNameField\" promptText=\"Nombre completo\" HBox.hgrow=\"ALWAYS\"/>\r\n                        <TextField fx:id=\"contactPhoneField\" promptText=\"Telefono\" HBox.hgrow=\"ALWAYS\"/>\r\n                    </HBox>\r\n\r\n                    <TextField fx:id=\"contactRelationField\" promptText=\"Madre, padre, pareja, amigo...\"/>\r\n\r\n                    <HBox alignment=\"CENTER_RIGHT\">\r\n                        <Button fx:id=\"addContactButton\" text=\"Anadir contacto\" onAction=\"#handleAddContact\" styleClass=\"primary-action-button\"/>\r\n                    </HBox>\r\n                </VBox>\r\n            </VBox>\r\n        </VBox>\r\n    </content>\r\n\r\n</ScrollPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/Proyecto_AplicacionSeguridad/GUI/Views/Medical-form-view.fxml b/out/production/Proyecto_AplicacionSeguridad/GUI/Views/Medical-form-view.fxml
+--- a/out/production/Proyecto_AplicacionSeguridad/GUI/Views/Medical-form-view.fxml	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/out/production/Proyecto_AplicacionSeguridad/GUI/Views/Medical-form-view.fxml	(date 1776971983136)
+@@ -60,8 +60,9 @@
+ 
+             <VBox spacing="16" styleClass="panel-card">
+                 <HBox alignment="CENTER_LEFT" spacing="10">
+-                    <Label text="Contactos de emergencia" styleClass="panel-title"/>
++                    <Label text="Contactos" styleClass="panel-title"/>
+                     <Region HBox.hgrow="ALWAYS"/>
++                    <Button fx:id="deleteContactButton" text="Borrar seleccionado" onAction="#handleDeleteContact" styleClass="home-outline-button"/>
+                     <Button fx:id="toggleContactFormButton" text="Mostrar formulario de contacto" onAction="#toggleContactForm" styleClass="home-outline-button"/>
+                 </HBox>
+ 
+Index: src/Resources/Model/Contact.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Resources.Model;\r\n\r\npublic class Contact {\r\n\r\n    private String name;\r\n    private String phone;\r\n    private String relation;\r\n\r\n    public Contact(String name, String phone, String relation) {\r\n        this.name = name;\r\n        this.phone = phone;\r\n        this.relation = relation;\r\n    }\r\n\r\n    public String getName() { return name; }\r\n    public String getPhone() { return phone; }\r\n    public String getRelation() { return relation; }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Resources/Model/Contact.java b/src/Resources/Model/Contact.java
+--- a/src/Resources/Model/Contact.java	(revision 0877ef0b69d244291f4e3e32e43ea98d4c0381f4)
++++ b/src/Resources/Model/Contact.java	(date 1776971817584)
+@@ -2,17 +2,30 @@
+ 
+ public class Contact {
+ 
++    private int id;
+     private String name;
+     private String phone;
+     private String relation;
+ 
+-    public Contact(String name, String phone, String relation) {
++    public Contact(int id, String name, String phone, String relation) {
++        this.id = id;
+         this.name = name;
+         this.phone = phone;
+         this.relation = relation;
+     }
+ 
++    public Contact(String name, String phone, String relation) {
++        this(0, name, phone, relation);
++    }
++
++    public int getId() { return id; }
+     public String getName() { return name; }
+     public String getPhone() { return phone; }
+     public String getRelation() { return relation; }
+-}
+\ No newline at end of file
++
++    @Override
++    public String toString() {
++        String safeRelation = relation == null || relation.isBlank() ? "Sin relacion indicada" : relation;
++        return name + " | " + phone + " | " + safeRelation;
++    }
++}

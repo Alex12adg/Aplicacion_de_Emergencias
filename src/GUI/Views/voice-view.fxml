@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.VoiceController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="6">
+                <Label text="Deteccion por voz" styleClass="module-title"/>
+                <Label text="Configura una palabra clave y simula frases para activar una emergencia por voz desde la aplicacion." styleClass="module-subtitle" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="18">
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Configuracion y simulacion" styleClass="panel-title"/>
+                    <VBox spacing="8">
+                        <Label text="Palabra clave" styleClass="field-label"/>
+                        <TextField fx:id="keywordField" promptText="socorro"/>
+                    </VBox>
+                    <VBox spacing="8">
+                        <Label text="Frase simulada" styleClass="field-label"/>
+                        <TextField fx:id="phraseField" promptText="Escribe una frase para probar la deteccion"/>
+                    </VBox>
+                    <Button fx:id="startVoiceButton" onAction="#handleStartVoice" styleClass="primary-action-button" text="Iniciar escucha"/>
+                    <Button fx:id="simulateVoiceButton" onAction="#handleSimulateVoice" text="Procesar frase"/>
+                    <Button fx:id="stopVoiceButton" onAction="#handleStopVoice" text="Detener escucha"/>
+                    <Label fx:id="voiceStatusLabel" styleClass="status-label" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Estado de deteccion" styleClass="panel-title"/>
+                    <Label fx:id="keywordLabel"/>
+                    <Label fx:id="lastInputLabel" wrapText="true"/>
+                    <TextArea fx:id="voiceDetailsArea" editable="false" prefRowCount="8" wrapText="true"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

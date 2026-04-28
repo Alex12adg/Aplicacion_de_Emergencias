@@ -1,0 +1,28 @@
+{
+  "centers": [
+    {
+      "name": "Hospital Central",
+      "type": "Hospital",
+      "latitude": 40.4168,
+      "longitude": -3.7038
+    },
+    {
+      "name": "Comisaría Norte",
+      "type": "Policía",
+      "latitude": 40.4280,
+      "longitude": -3.7120
+    },
+    {
+      "name": "Parque de Bomberos 3",
+      "type": "Bomberos",
+      "latitude": 40.4305,
+      "longitude": -3.6990
+    },
+    {
+      "name": "Puesto de Socorro Playa",
+      "type": "Socorristas",
+      "latitude": 40.0012,
+      "longitude": -3.5501
+    }
+  ]
+}

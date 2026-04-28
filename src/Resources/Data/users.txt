@@ -1,0 +1,4 @@
+Carlos López,600123456,propietario
+María Pérez,645223578,hermana
+Pedro Gómez,612334455,vecino
+Servicio Emergencias,112,servicio

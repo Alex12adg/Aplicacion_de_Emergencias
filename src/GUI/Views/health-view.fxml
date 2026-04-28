@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.HealthController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="6">
+                <Label text="Monitor de salud" styleClass="module-title"/>
+                <Label text="Simula lecturas cardiacas, detecta ausencia de pulso y gestiona la prealerta desde la interfaz." styleClass="module-subtitle" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="18">
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Control del monitor" styleClass="panel-title"/>
+                    <Button fx:id="startMonitorButton" onAction="#handleStartMonitoring" styleClass="primary-action-button" text="Iniciar monitor"/>
+                    <Button fx:id="readPulseButton" onAction="#handleReadPulse" text="Generar lectura"/>
+                    <Button fx:id="confirmSafeButton" onAction="#handleConfirmSafe" text="Confirmar que el usuario esta bien"/>
+                    <Button fx:id="stopMonitorButton" onAction="#handleStopMonitoring" text="Detener monitor"/>
+                    <Label fx:id="healthStatusLabel" styleClass="status-label" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Estado actual" styleClass="panel-title"/>
+                    <Label fx:id="rateLabel"/>
+                    <Label fx:id="noPulseLabel"/>
+                    <TextArea fx:id="healthDetailsArea" editable="false" prefRowCount="8" wrapText="true"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

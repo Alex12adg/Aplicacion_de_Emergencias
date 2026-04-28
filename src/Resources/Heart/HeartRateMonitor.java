@@ -2,65 +2,75 @@ package Resources.Heart;
 
 public class HeartRateMonitor {
 
-    private HeartRateSensorSimulator sensor;
+    private final HeartRateSensorSimulator sensor;
+    private final HeartRateAlert alert;
     private boolean monitoring = false;
     private int noPulseCounter = 0;
-    public HeartRateMonitor() {
+    private int lastHeartRate = 0;
+    private boolean preAlertActive = false;
 
-        sensor = new HeartRateSensorSimulator();
+    public HeartRateMonitor() {
+        this.sensor = new HeartRateSensorSimulator();
+        this.alert = new HeartRateAlert();
     }
 
     public void startMonitoring() {
-
         monitoring = true;
-        System.out.println("=== MONITOR DE PULSACIONES ACTIVADO ===");
-        while (monitoring) {
-
-            int heartRate = sensor.readHeartRate();
-            System.out.println("Frecuencia cardíaca detectada: " + heartRate);
-            if (heartRate == 0) {
-
-                noPulseCounter++;
-
-            } else {
-
-                noPulseCounter = 0;
-            }
-
-            if (noPulseCounter >= 3) {
-
-                triggerPreAlert();
-                break;
-            }
-
-            try {
-
-                Thread.sleep(3000);
-
-            } catch (InterruptedException e) {
-
-                e.printStackTrace();
-            }
-        }
+        preAlertActive = false;
     }
 
-    private void triggerPreAlert() {
-
-        System.out.println("POSIBLE AUSENCIA DE PULSO DETECTADA");
-        System.out.println("Iniciando alarma preventiva...");
-
-        HeartRateAlert alert = new HeartRateAlert();
-
-        boolean userConfirmed = alert.waitForUserConfirmation();
-
-        if (userConfirmed) {
-
-            System.out.println("El usuario ha confirmado que está bien.");
-
-        } else {
-
-            System.out.println("No hubo respuesta del usuario.");
-            System.out.println("En la siguiente fase se enviará una emergencia.");
+    public HeartMonitorState readNextPulse() {
+        if (!monitoring) {
+            return new HeartMonitorState(false, lastHeartRate, noPulseCounter, preAlertActive, false, "El monitor no esta activo.");
         }
+
+        int heartRate = sensor.readHeartRate();
+        lastHeartRate = heartRate;
+
+        if (heartRate == 0) {
+            noPulseCounter++;
+        } else {
+            noPulseCounter = 0;
+        }
+
+        if (noPulseCounter >= 3) {
+            preAlertActive = true;
+            monitoring = false;
+            return alert.createAlertState(false, lastHeartRate, noPulseCounter);
+        }
+
+        return new HeartMonitorState(
+                true,
+                heartRate,
+                noPulseCounter,
+                false,
+                false,
+                heartRate == 0
+                        ? "Lectura sin pulso detectado. Se incrementa el contador preventivo."
+                        : "Frecuencia cardiaca dentro de la simulacion normal."
+        );
+    }
+
+    public HeartMonitorState confirmUserIsSafe() {
+        HeartMonitorState state = alert.createAlertState(true, lastHeartRate, noPulseCounter);
+        noPulseCounter = 0;
+        preAlertActive = false;
+        return state;
+    }
+
+    public HeartMonitorState stopMonitoring() {
+        monitoring = false;
+        return new HeartMonitorState(false, lastHeartRate, noPulseCounter, preAlertActive, false, "Monitor detenido.");
+    }
+
+    public HeartMonitorState getCurrentState() {
+        return new HeartMonitorState(
+                monitoring,
+                lastHeartRate,
+                noPulseCounter,
+                preAlertActive,
+                false,
+                monitoring ? "Monitor activo." : (preAlertActive ? "Prealerta activa." : "Monitor detenido.")
+        );
     }
 }

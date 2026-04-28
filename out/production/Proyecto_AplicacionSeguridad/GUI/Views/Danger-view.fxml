@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.controllers.DangerController">
+
+    <content>
+        <VBox spacing="20" styleClass="module-page">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="6">
+                <Label text="Alerta de peligro" styleClass="module-title"/>
+                <Label text="Gestiona una prealerta desde la interfaz, con confirmacion manual y escalado a emergencia real." styleClass="module-subtitle" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="18">
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Control de alerta" styleClass="panel-title"/>
+                    <Button fx:id="activateButton" onAction="#handleDangerAlert" styleClass="primary-action-button" text="Activar alerta preventiva"/>
+                    <Label fx:id="dangerStatusLabel" styleClass="status-label" wrapText="true"/>
+                </VBox>
+
+                <VBox spacing="14" styleClass="panel-card">
+                    <Label text="Estado actual" styleClass="panel-title"/>
+                    <VBox spacing="6">
+                        <Label text="Ubicacion detectada" styleClass="field-label"/>
+                        <Label fx:id="locationLabel" wrapText="true"/>
+                    </VBox>
+                    <VBox spacing="6">
+                        <Label text="Detalle" styleClass="field-label"/>
+                        <TextArea fx:id="detailArea" editable="false" prefRowCount="8" wrapText="true"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+
+</ScrollPane>

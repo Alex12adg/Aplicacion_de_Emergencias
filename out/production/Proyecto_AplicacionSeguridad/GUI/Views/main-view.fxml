@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane stylesheets="@../Styles/app.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controllers.MainController">
+
+    <BorderPane>
+        <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="93.0" prefWidth="566.0" spacing="15" styleClass="top-bar">
+                <padding>
+                    <Insets bottom="10" left="20" right="20" top="10" />
+                </padding>
+
+                <Button onAction="#toggleSideMenu" styleClass="menu-toggle-button" text="&#9881;" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <ImageView fitHeight="45" fitWidth="45" pickOnBounds="true" preserveRatio="true" styleClass="user-avatar">
+                    <image>
+                        <!--<Image url="@../Assets/user.png"/> -->
+                    </image>
+                </ImageView>
+
+                <Label fx:id="usernameLabel" styleClass="username-label" text="Usuario" />
+            </HBox>
+        </top>
+
+        <center>
+            <HBox>
+                <ScrollPane fx:id="sideMenu"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            vbarPolicy="AS_NEEDED"
+                            prefWidth="200.0"
+                            minWidth="200.0"
+                            maxWidth="200.0"
+                            styleClass="side-menu-scroll">
+                    <content>
+                        <VBox prefHeight="288.0" spacing="10" styleClass="side-menu">
+                            <padding>
+                                <Insets left="10" right="10" top="20" bottom="20" />
+                            </padding>
+
+                            <Button onAction="#loadHome" styleClass="menu-button" text="Inicio" />
+                            <Button onAction="#loadEmergency" styleClass="menu-button" text="Emergencia" />
+                            <Button onAction="#loadHealth" styleClass="menu-button" text="Monitor salud" />
+                            <Button onAction="#loadVoice" styleClass="menu-button" text="Deteccion voz" />
+                            <Button onAction="#loadDanger" styleClass="menu-button" text="Alerta peligro" />
+                            <Button onAction="#loadReservations" styleClass="menu-button" text="Reservas" />
+                            <Button onAction="#loadCenters" styleClass="menu-button" text="Centros" />
+
+                            <Separator />
+
+                            <Button onAction="#loadSettings" styleClass="menu-button" text="Configuracion" />
+                            <Button onAction="#loadMedical" styleClass="menu-button" text="Historial medico" />
+                            <Button onAction="#handleLogout" styleClass="menu-button" text="Cerrar sesion" />
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <StackPane fx:id="contentArea" styleClass="content-area" HBox.hgrow="ALWAYS">
+                    <VBox alignment="CENTER" prefHeight="288.0" prefWidth="510.0" spacing="10">
+                        <Label styleClass="title" text="Asistencia de Emergencia" />
+                        <Label text="Selecciona una opcion del menu" />
+                    </VBox>
+                </StackPane>
+            </HBox>
+        </center>
+    </BorderPane>
+
+    <StackPane fx:id="dangerOverlay" managed="false" visible="false" styleClass="danger-overlay">
+        <VBox alignment="CENTER" maxWidth="360.0" spacing="16" styleClass="danger-modal">
+            <Label text="Alerta de peligro activa" styleClass="danger-modal-title" />
+            <Label fx:id="dangerModalMessageLabel" text="Se ha activado una alarma de peligro." wrapText="true" styleClass="danger-modal-text" />
+            <Label fx:id="dangerModalLocationLabel" text="Ubicacion no disponible" wrapText="true" styleClass="danger-modal-location" />
+            <Button fx:id="dangerModalStopButton" onAction="#handleDismissDangerAlarm" styleClass="primary-action-button" text="Terminar alarma" />
+        </VBox>
+    </StackPane>
+
+</StackPane>
